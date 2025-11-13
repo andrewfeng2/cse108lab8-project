@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - ACME University{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h2>Student Dashboard</h2>
+    </div>
+    
+    <!-- Tab Navigation -->
+    <div class="tab-navigation">
+        <button class="tab-btn active" data-tab="your-courses">Your Courses</button>
+        <button class="tab-btn" data-tab="add-courses">Add Courses</button>
+    </div>
+    
+    <!-- Your Courses Tab -->
+    <div id="your-courses" class="tab-content active">
+        <div class="courses-table-container">
+            <table class="courses-table">
+                <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Teacher</th>
+                        <th>Time</th>
+                        <th>Students Enrolled</th>
+                        <th>Grade</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if enrolled_courses %}
+                        {% for course, enrollment in enrolled_courses %}
+                        <tr>
+                            <td>{{ course.name }}</td>
+                            <td>{{ course.teacher.get_full_name() }}</td>
+                            <td>{{ course.time }}</td>
+                            <td>{{ course.enrollments|length }}/{{ course.capacity }}</td>
+                            <td>
+                                {% if enrollment.grade %}
+                                    {{ enrollment.grade }}
+                                {% else %}
+                                    No grade yet
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="enrolled-indicator">Enrolled</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="no-courses">You are not enrolled in any courses yet.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Add Courses Tab -->
+    <div id="add-courses" class="tab-content">
+        <div class="courses-table-container">
+            <table class="courses-table">
+                <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Teacher</th>
+                        <th>Time</th>
+                        <th>Students Enrolled</th>
+                        <th>Add class</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in all_courses %}
+                    {% set is_enrolled = enrolled_courses|selectattr('0.id', 'equalto', course.id)|list|length > 0 %}
+                    <tr>
+                        <td>{{ course.name }}</td>
+                        <td>{{ course.teacher.get_full_name() }}</td>
+                        <td>{{ course.time }}</td>
+                        <td>{{ course.enrollments|length }}/{{ course.capacity }}</td>
+                        <td>
+                            {% if is_enrolled %}
+                                <button class="action-btn remove-btn" data-course-id="{{ course.id }}" title="Remove from class">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            {% elif course.enrollments|length < course.capacity %}
+                                <button class="action-btn add-btn" data-course-id="{{ course.id }}" title="Add to class">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            {% else %}
+                                <span class="full-indicator">Full</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="loading" class="loading hidden">
+    <div class="spinner"></div>
+    <p>Processing...</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab functionality
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.dataset.tab;
+            
+            // Remove active class from all tabs and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content
+            this.classList.add('active');
+            document.getElementById(targetTab).classList.add('active');
+            
+            // Re-attach event listeners after tab switch
+            attachCourseEventListeners();
+        });
+    });
+    
+    // Initial attachment of event listeners
+    attachCourseEventListeners();
+});
+
+function attachCourseEventListeners() {
+    // Remove existing listeners to avoid duplicates
+    const existingAddButtons = document.querySelectorAll('.add-btn');
+    const existingRemoveButtons = document.querySelectorAll('.remove-btn');
+    
+    // Add course functionality
+    existingAddButtons.forEach(button => {
+        // Remove any existing listeners
+        button.replaceWith(button.cloneNode(true));
+    });
+    
+    // Re-attach add button listeners
+    const addButtons = document.querySelectorAll('.add-btn');
+    addButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const courseId = this.dataset.courseId;
+            enrollInCourse(courseId, this);
+        });
+    });
+    
+    // Remove course functionality for "Add Courses" tab
+    existingRemoveButtons.forEach(button => {
+        // Remove any existing listeners
+        button.replaceWith(button.cloneNode(true));
+    });
+    
+    // Re-attach remove button listeners
+    const removeButtons = document.querySelectorAll('.remove-btn');
+    removeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const courseId = this.dataset.courseId;
+            removeFromCourse(courseId, this);
+        });
+    });
+}
+
+async function enrollInCourse(courseId, button) {
+    const loading = document.getElementById('loading');
+    loading.classList.remove('hidden');
+    
+    try {
+        const response = await fetch('/api/enroll', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ course_id: courseId })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Reload the page to show updated enrollment
+            window.location.reload();
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        alert('An error occurred while enrolling in the course.');
+        console.error('Error:', error);
+    } finally {
+        loading.classList.add('hidden');
+    }
+}
+
+async function removeFromCourse(courseId, button) {
+    const loading = document.getElementById('loading');
+    loading.classList.remove('hidden');
+    
+    try {
+        const response = await fetch('/api/unenroll', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ course_id: courseId })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Reload the page to show updated enrollment
+            window.location.reload();
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        alert('An error occurred while removing the course.');
+        console.error('Error:', error);
+    } finally {
+        loading.classList.add('hidden');
+    }
+}
+</script>
+{% endblock %}

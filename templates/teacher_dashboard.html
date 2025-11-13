@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+
+{% block title %}Teacher Dashboard - ACME University{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h2>Your Courses</h2>
+    </div>
+    
+    <div class="courses-section">
+        {% if courses %}
+        <div class="courses-grid">
+            {% for course in courses %}
+            <div class="course-card teacher">
+                <div class="course-header">
+                    <h4>{{ course.name }}</h4>
+                    <span class="course-capacity">{{ course.enrollments|length }}/{{ course.capacity }}</span>
+                </div>
+                <div class="course-details">
+                    <p><i class="fas fa-clock"></i> {{ course.time }}</p>
+                    <p><i class="fas fa-users"></i> {{ course.enrollments|length }}/{{ course.capacity }} students</p>
+                </div>
+                <div class="course-actions">
+                    <button class="btn btn-primary view-students-btn" data-course-id="{{ course.id }}">
+                        <i class="fas fa-eye"></i> View Students
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="no-courses">You are not teaching any courses.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Student List Modal -->
+<div id="studentModal" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalTitle">Course Students</h3>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div id="studentList">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading students...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading" class="loading hidden">
+    <div class="spinner"></div>
+    <p>Processing...</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const viewStudentsButtons = document.querySelectorAll('.view-students-btn');
+    const modal = document.getElementById('studentModal');
+    const closeBtn = document.querySelector('.close');
+    
+    viewStudentsButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const courseId = this.dataset.courseId;
+            const courseName = this.closest('.course-card').querySelector('h4').textContent;
+            showStudentModal(courseId, courseName);
+        });
+    });
+    
+    closeBtn.addEventListener('click', function() {
+        modal.classList.add('hidden');
+    });
+    
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.classList.add('hidden');
+        }
+    });
+});
+
+async function showStudentModal(courseId, courseName) {
+    const modal = document.getElementById('studentModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const studentList = document.getElementById('studentList');
+    
+    modalTitle.textContent = courseName + ' - Students';
+    modal.classList.remove('hidden');
+    
+    // Show loading
+    studentList.innerHTML = `
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Loading students...</p>
+        </div>
+    `;
+    
+    try {
+        const response = await fetch(`/api/course/${courseId}/students`);
+        const result = await response.json();
+        
+        if (result.success) {
+            displayStudents(result.students);
+        } else {
+            studentList.innerHTML = `<p class="error">Error: ${result.message}</p>`;
+        }
+    } catch (error) {
+        studentList.innerHTML = `<p class="error">An error occurred while loading students.</p>`;
+        console.error('Error:', error);
+    }
+}
+
+function displayStudents(students) {
+    const studentList = document.getElementById('studentList');
+    
+    if (students.length === 0) {
+        studentList.innerHTML = '<p class="no-students">No students enrolled in this course.</p>';
+        return;
+    }
+    
+    const table = document.createElement('table');
+    table.className = 'students-table';
+    
+    const header = document.createElement('thead');
+    header.innerHTML = `
+        <tr>
+            <th>Student Name</th>
+            <th>Grade</th>
+            <th>Actions</th>
+        </tr>
+    `;
+    table.appendChild(header);
+    
+    const tbody = document.createElement('tbody');
+    students.forEach(student => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${student.name}</td>
+            <td>
+                <div class="grade-container">
+                    <span class="grade-display" data-enrollment-id="${student.id}">
+                        ${student.grade || 'No grade'}
+                    </span>
+                    <div class="grade-edit-form hidden" data-enrollment-id="${student.id}">
+                        <input type="number" class="grade-input" min="0" max="100" 
+                               value="${student.grade || ''}" placeholder="Enter grade">
+                        <button class="btn btn-sm btn-success save-grade-btn" data-enrollment-id="${student.id}">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn btn-sm btn-secondary cancel-grade-btn" data-enrollment-id="${student.id}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-outline edit-grade-btn" data-enrollment-id="${student.id}">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    
+    studentList.innerHTML = '';
+    studentList.appendChild(table);
+    
+    // Add event listeners for edit buttons
+    const editButtons = studentList.querySelectorAll('.edit-grade-btn');
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const enrollmentId = this.dataset.enrollmentId;
+            showGradeEditForm(enrollmentId);
+        });
+    });
+    
+    // Add event listeners for save buttons
+    const saveButtons = studentList.querySelectorAll('.save-grade-btn');
+    saveButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const enrollmentId = this.dataset.enrollmentId;
+            saveGrade(enrollmentId);
+        });
+    });
+    
+    // Add event listeners for cancel buttons
+    const cancelButtons = studentList.querySelectorAll('.cancel-grade-btn');
+    cancelButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const enrollmentId = this.dataset.enrollmentId;
+            hideGradeEditForm(enrollmentId);
+        });
+    });
+    
+    // Add keyboard support for grade inputs
+    const gradeInputs = studentList.querySelectorAll('.grade-input');
+    gradeInputs.forEach(input => {
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const enrollmentId = this.closest('.grade-edit-form').dataset.enrollmentId;
+                saveGrade(enrollmentId);
+            } else if (e.key === 'Escape') {
+                const enrollmentId = this.closest('.grade-edit-form').dataset.enrollmentId;
+                hideGradeEditForm(enrollmentId);
+            }
+        });
+    });
+}
+
+function showGradeEditForm(enrollmentId) {
+    const gradeDisplay = document.querySelector(`.grade-display[data-enrollment-id="${enrollmentId}"]`);
+    const editForm = document.querySelector(`.grade-edit-form[data-enrollment-id="${enrollmentId}"]`);
+    const editButton = document.querySelector(`.edit-grade-btn[data-enrollment-id="${enrollmentId}"]`);
+    const gradeContainer = document.querySelector(`.grade-container`);
+    
+    if (gradeDisplay && editForm && editButton) {
+        gradeDisplay.classList.add('hidden');
+        editForm.classList.remove('hidden');
+        editButton.classList.add('hidden');
+        
+        // Add editing class for visual feedback
+        if (gradeContainer) {
+            gradeContainer.classList.add('editing');
+        }
+        
+        // Focus on the input field
+        const input = editForm.querySelector('.grade-input');
+        input.focus();
+        input.select();
+    }
+}
+
+function hideGradeEditForm(enrollmentId) {
+    const gradeDisplay = document.querySelector(`.grade-display[data-enrollment-id="${enrollmentId}"]`);
+    const editForm = document.querySelector(`.grade-edit-form[data-enrollment-id="${enrollmentId}"]`);
+    const editButton = document.querySelector(`.edit-grade-btn[data-enrollment-id="${enrollmentId}"]`);
+    const gradeContainer = document.querySelector(`.grade-container`);
+    
+    if (gradeDisplay && editForm && editButton) {
+        gradeDisplay.classList.remove('hidden');
+        editForm.classList.add('hidden');
+        editButton.classList.remove('hidden');
+        
+        // Remove editing class
+        if (gradeContainer) {
+            gradeContainer.classList.remove('editing');
+        }
+    }
+}
+
+function saveGrade(enrollmentId) {
+    const editForm = document.querySelector(`.grade-edit-form[data-enrollment-id="${enrollmentId}"]`);
+    const input = editForm.querySelector('.grade-input');
+    const grade = parseInt(input.value);
+    
+    if (isNaN(grade) || grade < 0 || grade > 100) {
+        alert('Please enter a valid grade between 0 and 100.');
+        return;
+    }
+    
+    updateGrade(enrollmentId, grade);
+}
+
+async function updateGrade(enrollmentId, grade) {
+    const loading = document.getElementById('loading');
+    loading.classList.remove('hidden');
+    
+    try {
+        const response = await fetch('/api/update_grade', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                enrollment_id: enrollmentId,
+                grade: grade
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Update the display
+            const gradeDisplay = document.querySelector(`.grade-display[data-enrollment-id="${enrollmentId}"]`);
+            gradeDisplay.textContent = grade;
+            
+            // Hide the edit form and show the display
+            hideGradeEditForm(enrollmentId);
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        alert('An error occurred while updating the grade.');
+        console.error('Error:', error);
+    } finally {
+        loading.classList.add('hidden');
+    }
+}
+</script>
+{% endblock %}
