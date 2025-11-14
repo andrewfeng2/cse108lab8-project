@@ -175,7 +175,7 @@ class EnrollmentModelView(ModelView):
         
         return form
 
-admin = Admin(app, name='ACME University Admin', index_view=SecureAdminIndexView())
+admin = Admin(app, name='UC Merced Admin', index_view=SecureAdminIndexView())
 admin.add_view(UserModelView(User, db.session))
 admin.add_view(CourseModelView(Course, db.session))
 admin.add_view(EnrollmentModelView(Enrollment, db.session))

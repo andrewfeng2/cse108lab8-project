@@ -441,7 +441,7 @@
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('admin.index') }}">
-                <i class="fas fa-university"></i> ACME University Admin
+                <i class="fas fa-university"></i> UC Merced Admin
             </a>
             
             <div class="navbar-nav ms-auto d-flex align-items-center">
@@ -477,15 +477,15 @@
             const adminThemeToggle = document.getElementById('admin-theme-toggle');
             if (adminThemeToggle) {
                 adminThemeToggle.addEventListener('click', function() {
-                    if (window.ACME && window.ACME.toggleTheme) {
-                        window.ACME.toggleTheme();
+                    if (window.UCMerced && window.UCMerced.toggleTheme) {
+                        window.UCMerced.toggleTheme();
                         // Update icon after toggle
                         setTimeout(() => {
                             const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
                             updateAdminThemeIcon(currentTheme === 'dark' ? 'dark' : 'light');
                         }, 100);
                     } else {
-                        // Fallback if ACME object not loaded
+                        // Fallback if UCMerced object not loaded
                         toggleAdminTheme();
                     }
                 });
