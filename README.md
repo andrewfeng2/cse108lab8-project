@@ -1,4 +1,4 @@
-# ACME University Student Enrollment System
+# UCM University Student Enrollment System
 
 A comprehensive web application for managing student enrollment, course management, and grade tracking built with Flask.
 
