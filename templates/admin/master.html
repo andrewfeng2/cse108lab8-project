@@ -50,12 +50,13 @@
         
         /* Admin-specific dark theme overrides */
         [data-theme="dark"] .navbar {
-            background: var(--bg-secondary) !important;
-            border-bottom: 1px solid var(--border-light) !important;
+            background: var(--navbar-gradient) !important;
+            border-bottom: none !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
         
         [data-theme="dark"] .navbar .container-fluid {
-            background-color: var(--bg-secondary) !important;
+            background-color: transparent !important;
         }
         
         [data-theme="dark"] .navbar .navbar-nav,
@@ -69,11 +70,11 @@
         }
         
         [data-theme="dark"] .navbar-brand {
-            color: #667eea !important;
+            color: white !important;
         }
         
         [data-theme="dark"] .admin-user-info {
-            color: #e0e0e0 !important;
+            color: white !important;
         }
         
         [data-theme="dark"] body {
@@ -139,6 +140,19 @@
             background-color: var(--bg-secondary);
             color: #e0e0e0;
             border-color: var(--border-color);
+        }
+        
+        
+        .btn-primary {
+            background: #002856 !important;
+            border-color: #002856 !important;
+            color: white !important;
+        }
+        
+        .btn-primary:hover {
+            background: #001d42 !important;
+            border-color: #001d42 !important;
+            color: white !important;
         }
         
         [data-theme="dark"] .btn-primary {
@@ -305,42 +319,51 @@
         
         .navbar-brand {
             font-weight: 600;
-            color: #667eea !important;
+            color: white !important;
         }
         
         .admin-logout {
-            background: #dc3545;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            border: none;
+            border: 2px solid rgba(255, 255, 255, 0.5);
             padding: 0.5rem 1rem;
-            border-radius: 5px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
         .admin-logout:hover {
-            background: #c82333;
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.8);
             color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
         .navbar {
-            background: #f8f9fa !important;
-            border-bottom: 1px solid #dee2e6;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
+            background: var(--navbar-gradient) !important;
+            border-bottom: none;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            color: white;
         }
         
         .admin-user-info {
-            color: #6c757d;
+            color: white;
             margin-right: 1rem;
+            font-weight: 500;
         }
         
         .admin-theme-toggle {
-            background: #667eea;
-            border: 2px solid #667eea;
+            background: rgba(255, 255, 255, 0.2) !important;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5) !important;
             color: white;
             padding: 0.5rem;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             margin-right: 1rem;
             transition: all 0.3s ease;
@@ -348,28 +371,27 @@
             align-items: center;
             justify-content: center;
             min-width: 40px;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
         .admin-theme-toggle:hover {
-            background: #5568d3;
-            border-color: #5568d3;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            background: rgba(255, 255, 255, 0.3) !important;
+            border-color: rgba(255, 255, 255, 0.8) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             transform: translateY(-1px);
         }
         
         [data-theme="dark"] .admin-theme-toggle {
-            background: var(--bg-tertiary);
-            border-color: #667eea;
-            color: #667eea;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: rgba(255, 255, 255, 0.5) !important;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
         [data-theme="dark"] .admin-theme-toggle:hover {
-            background: var(--bg-secondary);
-            border-color: #764ba2;
-            color: #764ba2;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            background: rgba(255, 255, 255, 0.3) !important;
+            border-color: rgba(255, 255, 255, 0.8) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
         /* Ensure all table text is white in dark mode, no alternating colors */
