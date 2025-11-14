@@ -86,6 +86,7 @@ class UserModelView(ModelView):
     column_list = ['username', 'first_name', 'last_name', 'role']
     form = UserForm
     can_delete = True
+    page_size = 1000  
     
     def on_model_change(self, form, model, is_created):
         if hasattr(form, 'password') and form.password.data:
@@ -175,7 +176,7 @@ class EnrollmentModelView(ModelView):
         
         return form
 
-admin = Admin(app, name='ACME University Admin', index_view=SecureAdminIndexView())
+admin = Admin(app, name='UC Merced Admin', index_view=SecureAdminIndexView())
 admin.add_view(UserModelView(User, db.session))
 admin.add_view(CourseModelView(Course, db.session))
 admin.add_view(EnrollmentModelView(Enrollment, db.session))

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test script to verify the ACME University Enrollment System setup
+Test script to verify the UC Merced Enrollment System setup
 """
 
 import sys
@@ -84,7 +84,7 @@ def test_demo_accounts():
 
 def main():
     """Run all tests"""
-    print("🎓 ACME University Enrollment System - Setup Test")
+    print("🎓 UC Merced Enrollment System - Setup Test")
     print("=" * 50)
     
     success = True

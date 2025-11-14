@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Export functions for use in other scripts
-window.ACME = {
+window.UCMerced = {
     showNotification,
     validateForm,
     apiRequest,
