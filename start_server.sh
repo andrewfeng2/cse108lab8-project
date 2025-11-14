@@ -27,9 +27,9 @@ fi
 # Create necessary directories
 mkdir -p templates static/css static/js
 
-echo "🚀 Starting Flask application..."
-echo "📱 Open your browser and go to: http://localhost:5001"
-echo "🔑 Demo accounts are available in the README.md file"
+echo "Starting Flask application..."
+echo "Open your browser and go to: http://localhost:5001"
+echo "Demo accounts are available in the README.md file"
 echo ""
 echo "Press Ctrl+C to stop the server"
 echo ""
