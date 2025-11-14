@@ -551,7 +551,7 @@ body {
 }
 
 .add-btn {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    background: #28a745;
     color: white;
     border: none;
     padding: 0.625rem 1.25rem;
@@ -564,13 +564,13 @@ body {
 }
 
 .add-btn:hover {
-    background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+    background: #28a745;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(40, 167, 69, 0.35);
 }
 
 .remove-btn {
-    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    background: #dc3545;
     color: white;
     border: none;
     padding: 0.625rem 1.25rem;
