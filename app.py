@@ -231,7 +231,7 @@ def login():
             session['user_name'] = user.get_full_name()
             return redirect(url_for('dashboard'))
         else:
-            flash('Invalid username or password')
+            flash('Invalid username or password', 'error')
     
     return render_template('login.html')
 

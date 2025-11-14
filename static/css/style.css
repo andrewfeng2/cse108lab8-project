@@ -20,6 +20,7 @@
     --success-text: #155724;
     --error-bg: #f8d7da;
     --error-border: #f5c6cb;
+    --error-text: #dc3545;
     --warning-bg: #fff3cd;
     --warning-border: #ffeeba;
     --warning-text: #856404;
@@ -46,6 +47,7 @@
     --success-text: #90ee90;
     --error-bg: #3a1e1e;
     --error-border: #5a2d2d;
+    --error-text: #ff6b6b;
     --warning-bg: #3a321e;
     --warning-border: #5a522d;
     --warning-text: #ffd700;
@@ -153,6 +155,12 @@ body {
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     font-weight: 500;
+}
+
+.flash-message.flash-error {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
 }
 
 /* Login page */
@@ -1028,9 +1036,8 @@ body {
 .close {
     font-size: 2rem;
     cursor: pointer;
-    line-height: 1;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1038,11 +1045,12 @@ body {
     transition: all 0.3s ease;
     position: relative;
     z-index: 1;
+    line-height: 1;
+    padding: 0;
 }
 
 .close:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: rotate(90deg);
 }
 
 .modal-body {
