@@ -86,6 +86,7 @@ class UserModelView(ModelView):
     column_list = ['username', 'first_name', 'last_name', 'role']
     form = UserForm
     can_delete = True
+    page_size = 1000  
     
     def on_model_change(self, form, model, is_created):
         if hasattr(form, 'password') and form.password.data:
