@@ -11,17 +11,17 @@ def test_imports():
     print("Testing imports...")
     try:
         import flask
-        print("✅ Flask imported successfully")
+        print("Flask imported successfully")
         
         import flask_sqlalchemy
-        print("✅ Flask-SQLAlchemy imported successfully")
+        print("Flask-SQLAlchemy imported successfully")
         
         import flask_admin
-        print("✅ Flask-Admin imported successfully")
+        print("Flask-Admin imported successfully")
         
         return True
     except ImportError as e:
-        print(f"❌ Import error: {e}")
+        print(f"Import error: {e}")
         return False
 
 def test_app_creation():
@@ -33,26 +33,26 @@ def test_app_creation():
         with app.app_context():
             # Test database connection
             db.create_all()
-            print("✅ Database tables created successfully")
+            print("Database tables created successfully")
             
             # Test sample data
             user_count = User.query.count()
             course_count = Course.query.count()
             enrollment_count = Enrollment.query.count()
             
-            print(f"✅ Found {user_count} users in database")
-            print(f"✅ Found {course_count} courses in database")
-            print(f"✅ Found {enrollment_count} enrollments in database")
+            print(f"Found {user_count} users in database")
+            print(f"Found {course_count} courses in database")
+            print(f"Found {enrollment_count} enrollments in database")
             
             if user_count > 0 and course_count > 0:
-                print("✅ Sample data appears to be loaded correctly")
+                print("Sample data appears to be loaded correctly")
                 return True
             else:
-                print("⚠️  No sample data found - this is normal for first run")
+                print("No sample data found - this is normal for first run")
                 return True
                 
     except Exception as e:
-        print(f"❌ App creation error: {e}")
+        print(f"App creation error: {e}")
         return False
 
 def test_demo_accounts():
@@ -73,14 +73,14 @@ def test_demo_accounts():
                 user = User.query.filter_by(username=username).first()
                 if user:
                     if user.role == expected_role:
-                        print(f"✅ Demo account '{username}' ({expected_role}) found")
+                        print(f"Demo account '{username}' ({expected_role}) found")
                     else:
-                        print(f"⚠️  Demo account '{username}' has unexpected role: {user.role}")
+                        print(f"Demo account '{username}' has unexpected role: {user.role}")
                 else:
-                    print(f"❌ Demo account '{username}' not found")
+                    print(f"Demo account '{username}' not found")
                     
     except Exception as e:
-        print(f"❌ Demo account test error: {e}")
+        print(f"Demo account test error: {e}")
 
 def main():
     """Run all tests"""
@@ -102,14 +102,14 @@ def main():
     
     print("\n" + "=" * 50)
     if success:
-        print("🎉 All tests passed! The application is ready to run.")
+        print("All tests passed! The application is ready to run.")
         print("\nTo start the server, run:")
         print("  python3 app.py")
         print("\nOr use the startup script:")
         print("  ./start_server.sh")
         print("\nThen open your browser to: http://localhost:5001")
     else:
-        print("❌ Some tests failed. Please check the errors above.")
+        print("Some tests failed. Please check the errors above.")
         sys.exit(1)
 
 if __name__ == "__main__":
