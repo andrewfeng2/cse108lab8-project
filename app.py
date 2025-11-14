@@ -15,12 +15,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# Database Models
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
-    role = db.Column(db.String(20), nullable=False)  # 'student', 'teacher', 'admin'
+    role = db.Column(db.String(20), nullable=False) 
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     
@@ -54,7 +53,6 @@ class Enrollment(db.Model):
     
     __table_args__ = (db.UniqueConstraint('student_id', 'course_id', name='unique_enrollment'),)
 
-# Custom Admin Views
 class SecureAdminIndexView(AdminIndexView):
     def is_accessible(self):
         return session.get('user_role') == 'admin'
@@ -64,7 +62,6 @@ class SecureAdminIndexView(AdminIndexView):
     
     @expose('/')
     def index(self):
-        # Get statistics for the admin dashboard
         users_count = User.query.count()
         courses_count = Course.query.count()
         enrollments_count = Enrollment.query.count()
@@ -75,7 +72,6 @@ class SecureAdminIndexView(AdminIndexView):
                          courses_count=courses_count,
                          enrollments_count=enrollments_count)
 
-# Custom form for User creation
 class UserForm(Form):
     username = StringField('Username')
     first_name = StringField('First Name')
@@ -91,52 +87,37 @@ class UserModelView(ModelView):
     form = UserForm
     can_delete = True
     
-    # Override on_model_change to handle password hashing
     def on_model_change(self, form, model, is_created):
-        # Handle password - only update if a new password is provided
         if hasattr(form, 'password') and form.password.data:
-            # New password provided, hash it
             model.set_password(form.password.data)
         elif is_created:
-            # Creating new user but no password provided, set default
             model.set_password('defaultpassword123')
-        # If editing existing user and no password provided, keep current password
         
         super(UserModelView, self).on_model_change(form, model, is_created)
     
-    # Override delete_model to handle cascade deletion properly
     def delete_model(self, model):
         try:
-            # Store model info before deletion
             username = model.username
             user_id = model.id
             
-            # Check if user has courses or enrollments
             courses_count = Course.query.filter_by(teacher_id=user_id).count()
             enrollments_count = Enrollment.query.filter_by(student_id=user_id).count()
             
-            # Use raw SQL to delete related records to avoid foreign key issues
-            # Delete enrollments for this user
             db.session.execute(text("DELETE FROM enrollment WHERE student_id = :user_id"), {"user_id": user_id})
             
-            # Delete enrollments for courses taught by this user
             db.session.execute(text("DELETE FROM enrollment WHERE course_id IN (SELECT id FROM course WHERE teacher_id = :user_id)"), {"user_id": user_id})
             
-            # Delete courses taught by this user
             db.session.execute(text("DELETE FROM course WHERE teacher_id = :user_id"), {"user_id": user_id})
             
-            # Now delete the user
             db.session.execute(text("DELETE FROM user WHERE id = :user_id"), {"user_id": user_id})
             
             db.session.commit()
             
-            # Try to flash messages if in request context
             try:
                 if courses_count > 0 or enrollments_count > 0:
                     flash(f'User "{username}" had {courses_count} courses and {enrollments_count} enrollments. These were also deleted.', 'warning')
                 flash(f'User "{username}" has been successfully deleted.', 'success')
             except RuntimeError:
-                # Not in request context, skip flash messages
                 pass
                 
             return True
@@ -145,7 +126,6 @@ class UserModelView(ModelView):
             try:
                 flash(f'Error deleting user "{username}": {str(e)}', 'error')
             except RuntimeError:
-                # Not in request context, skip flash messages
                 pass
             return False
 
@@ -156,17 +136,14 @@ class CourseModelView(ModelView):
     column_list = ['name', 'teacher', 'time', 'capacity']
     form_columns = ['name', 'teacher_id', 'time', 'capacity']
     
-    # Override form creation to add proper choices for teacher_id
     def create_form(self):
         form = super(CourseModelView, self).create_form()
-        # Get all teachers for the dropdown
         teachers = User.query.filter_by(role='teacher').all()
         form.teacher_id.choices = [(t.id, f"{t.first_name} {t.last_name} ({t.username})") for t in teachers]
         return form
     
     def edit_form(self, obj):
         form = super(CourseModelView, self).edit_form(obj)
-        # Get all teachers for the dropdown
         teachers = User.query.filter_by(role='teacher').all()
         form.teacher_id.choices = [(t.id, f"{t.first_name} {t.last_name} ({t.username})") for t in teachers]
         return form
@@ -178,14 +155,11 @@ class EnrollmentModelView(ModelView):
     column_list = ['student', 'course', 'grade', 'enrolled_date']
     form_columns = ['student_id', 'course_id', 'grade']
     
-    # Override form creation to add proper choices for foreign keys
     def create_form(self):
         form = super(EnrollmentModelView, self).create_form()
-        # Get all students for the dropdown
         students = User.query.filter_by(role='student').all()
         form.student_id.choices = [(s.id, f"{s.first_name} {s.last_name} ({s.username})") for s in students]
         
-        # Get all courses for the dropdown
         courses = Course.query.all()
         form.course_id.choices = [(c.id, f"{c.name} - {c.teacher.first_name} {c.teacher.last_name}") for c in courses]
         
@@ -193,23 +167,19 @@ class EnrollmentModelView(ModelView):
     
     def edit_form(self, obj):
         form = super(EnrollmentModelView, self).edit_form(obj)
-        # Get all students for the dropdown
         students = User.query.filter_by(role='student').all()
         form.student_id.choices = [(s.id, f"{s.first_name} {s.last_name} ({s.username})") for s in students]
         
-        # Get all courses for the dropdown
         courses = Course.query.all()
         form.course_id.choices = [(c.id, f"{c.name} - {c.teacher.first_name} {c.teacher.last_name}") for c in courses]
         
         return form
 
-# Initialize Flask-Admin
 admin = Admin(app, name='ACME University Admin', index_view=SecureAdminIndexView())
 admin.add_view(UserModelView(User, db.session))
 admin.add_view(CourseModelView(Course, db.session))
 admin.add_view(EnrollmentModelView(Enrollment, db.session))
 
-# Routes
 @app.route('/')
 def index():
     if 'user_id' in session:
@@ -290,19 +260,16 @@ def enroll_course():
     course_id = request.json.get('course_id')
     student_id = session['user_id']
     
-    # Check if already enrolled
     existing = Enrollment.query.filter_by(student_id=student_id, course_id=course_id).first()
     if existing:
         return jsonify({'success': False, 'message': 'Already enrolled in this course'})
     
-    # Check capacity
     course = Course.query.get(course_id)
     current_enrollments = Enrollment.query.filter_by(course_id=course_id).count()
     
     if current_enrollments >= course.capacity:
         return jsonify({'success': False, 'message': 'Course is at capacity'})
     
-    # Enroll student
     enrollment = Enrollment(student_id=student_id, course_id=course_id)
     db.session.add(enrollment)
     db.session.commit()
@@ -317,12 +284,10 @@ def unenroll_course():
     course_id = request.json.get('course_id')
     student_id = session['user_id']
     
-    # Find enrollment
     enrollment = Enrollment.query.filter_by(student_id=student_id, course_id=course_id).first()
     if not enrollment:
         return jsonify({'success': False, 'message': 'Not enrolled in this course'})
     
-    # Remove enrollment
     db.session.delete(enrollment)
     db.session.commit()
     
@@ -340,7 +305,6 @@ def update_grade():
     if not enrollment:
         return jsonify({'success': False, 'message': 'Enrollment not found'})
     
-    # Check if teacher teaches this course
     course = Course.query.get(enrollment.course_id)
     if course.teacher_id != session['user_id']:
         return jsonify({'success': False, 'message': 'Unauthorized'})
@@ -377,14 +341,11 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         
-        # Create sample data if database is empty
         if User.query.count() == 0:
-            # Create admin user
             admin = User(username='admin', role='admin', first_name='Admin', last_name='User')
             admin.set_password('admin123')
             db.session.add(admin)
             
-            # Create teachers
             teachers_data = [
                 ('ahepworth', 'Ammon', 'Hepworth', 'teacher123'),
                 ('swalker', 'Susan', 'Walker', 'teacher123'),
@@ -396,7 +357,6 @@ if __name__ == '__main__':
                 teacher.set_password(password)
                 db.session.add(teacher)
             
-            # Create students
             students_data = [
                 ('cnorris', 'Chuck', 'Norris', 'student123'),
                 ('mnorris', 'Mindy', 'Norris', 'student123'),
@@ -427,7 +387,6 @@ if __name__ == '__main__':
             
             db.session.commit()
             
-            # Create courses
             courses_data = [
                 ('Math 101', 4, 'MWF 10:00-10:50 AM', 8),  # Ralph Jenkins (ID 4)
                 ('Physics 121', 3, 'TR 11:00-11:50 AM', 10),  # Susan Walker (ID 3)
@@ -441,7 +400,6 @@ if __name__ == '__main__':
             
             db.session.commit()
             
-            # Create enrollments with grades
             enrollments_data = [
                 # Math 101 (ID 1) - Ralph Jenkins
                 (7, 1, 92), (8, 1, 65), (6, 1, 86), (9, 1, 77),
