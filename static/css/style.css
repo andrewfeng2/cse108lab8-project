@@ -12,9 +12,9 @@
     --border-dark: #ced4da;
     --shadow: rgba(0,0,0,0.1);
     --shadow-dark: rgba(0,0,0,0.2);
-    --navbar-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --tab-active-color: #667eea;
-    --tab-active-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --navbar-gradient: #002856;
+    --tab-active-color: #013066;
+    --tab-active-gradient: #002856;
     --success-bg: #d4edda;
     --success-border: #c3e6cb;
     --success-text: #155724;
@@ -27,7 +27,6 @@
 }
 
 [data-theme="dark"] {
-    /* Dark theme */
     --bg-primary: #1a1a1a;
     --bg-secondary: #2d2d2d;
     --bg-tertiary: #3a3a3a;

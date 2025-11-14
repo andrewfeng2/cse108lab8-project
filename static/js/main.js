@@ -13,12 +13,10 @@ function hideLoading() {
 }
 
 function showNotification(message, type = 'info') {
-    // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
     
-    // Style the notification
     notification.style.cssText = `
         position: fixed;
         top: 20px;
@@ -31,7 +29,6 @@ function showNotification(message, type = 'info') {
         animation: slideIn 0.3s ease;
     `;
     
-    // Set background color based on type
     switch (type) {
         case 'success':
             notification.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
@@ -46,10 +43,7 @@ function showNotification(message, type = 'info') {
             notification.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
     }
     
-    // Add to page
     document.body.appendChild(notification);
-    
-    // Remove after 3 seconds
     setTimeout(() => {
         notification.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => {
