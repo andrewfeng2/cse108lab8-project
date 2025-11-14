@@ -1,7 +1,7 @@
 # UCM University Enrollment System - API Documentation
 
 ## Overview
-This document describes the REST API endpoints available in the ACME University Enrollment System.
+This document describes the REST API endpoints available in the UCM University Enrollment System.
 
 ## Base URL
 ```
