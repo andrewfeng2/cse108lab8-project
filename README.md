@@ -149,16 +149,16 @@ Lab 8/
 
 ## Features Implemented
 
-✅ User authentication and authorization  
-✅ Role-based access control  
-✅ Student course enrollment  
-✅ Teacher grade management  
-✅ Admin panel with Flask-Admin  
-✅ Responsive design  
-✅ Real-time course capacity checking  
-✅ Grade editing interface  
-✅ Modern UI/UX design  
-✅ Sample data population  
+- User authentication and authorization  
+- Role-based access control  
+- Student course enrollment  
+- Teacher grade management  
+- Admin panel with Flask-Admin  
+- Responsive design  
+- Real-time course capacity checking  
+- Grade editing interface  
+- Modern UI/UX design  
+- Sample data population  
 
 ## Future Enhancements
 
