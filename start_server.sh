@@ -19,7 +19,7 @@ fi
 
 # Install dependencies if requirements.txt exists
 if [ -f "requirements.txt" ]; then
-    echo "📦 Installing Python dependencies..."
+    echo "Installing Python dependencies..."
     pip3 install -r requirements.txt
     echo ""
 fi

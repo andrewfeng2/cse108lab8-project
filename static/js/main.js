@@ -1,6 +1,3 @@
-// Main JavaScript file for ACME University Enrollment App
-
-// Utility functions
 function showLoading() {
     const loading = document.getElementById('loading');
     if (loading) {
