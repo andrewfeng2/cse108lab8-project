@@ -1,170 +1,47 @@
 {% extends "admin/master.html" %}
 
 {% block body %}
-<div class="admin-header">
-    <div class="admin-nav">
-        <h1>ACME University Admin Panel</h1>
-        <div class="admin-actions">
-            <span class="admin-user">Welcome {{ session.user_name }}!</span>
+    <div class="main-page-container">
+        <div class="page-title-section">
+            <h2>Admin Dashboard</h2>
+        </div>
+        
+        <div class="admin-content">
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <h3>{{ users_count }}</h3>
+                    <p>Total Users</p>
+                </div>
+                <div class="stat-card">
+                    <h3>{{ courses_count }}</h3>
+                    <p>Total Courses</p>
+                </div>
+                <div class="stat-card">
+                    <h3>{{ enrollments_count }}</h3>
+                    <p>Total Enrollments</p>
+                </div>
+            </div>
+            
+            <div class="admin-links">
+                <h2>Quick Actions</h2>
+                <div class="action-grid">
+                    <a href="{{ url_for('user.index_view') }}" class="action-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Manage Users</h3>
+                        <p>Add, edit, or remove users</p>
+                    </a>
+                    <a href="{{ url_for('course.index_view') }}" class="action-card">
+                        <i class="fas fa-book"></i>
+                        <h3>Manage Courses</h3>
+                        <p>Add, edit, or remove courses</p>
+                    </a>
+                    <a href="{{ url_for('enrollment.index_view') }}" class="action-card">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3>Manage Enrollments</h3>
+                        <p>View and edit student enrollments</p>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-<div class="admin-content">
-    <div class="admin-stats">
-        <div class="stat-card">
-            <h3>{{ users_count }}</h3>
-            <p>Total Users</p>
-        </div>
-        <div class="stat-card">
-            <h3>{{ courses_count }}</h3>
-            <p>Total Courses</p>
-        </div>
-        <div class="stat-card">
-            <h3>{{ enrollments_count }}</h3>
-            <p>Total Enrollments</p>
-        </div>
-    </div>
-    
-    <div class="admin-links">
-        <h2>Quick Actions</h2>
-        <div class="action-grid">
-            <a href="{{ url_for('user.index_view') }}" class="action-card">
-                <i class="fas fa-users"></i>
-                <h3>Manage Users</h3>
-                <p>Add, edit, or remove users</p>
-            </a>
-            <a href="{{ url_for('course.index_view') }}" class="action-card">
-                <i class="fas fa-book"></i>
-                <h3>Manage Courses</h3>
-                <p>Add, edit, or remove courses</p>
-            </a>
-            <a href="{{ url_for('enrollment.index_view') }}" class="action-card">
-                <i class="fas fa-graduation-cap"></i>
-                <h3>Manage Enrollments</h3>
-                <p>View and edit student enrollments</p>
-            </a>
-        </div>
-    </div>
-</div>
-
-<style>
-.admin-header {
-    background: var(--navbar-gradient);
-    color: white;
-    padding: 2rem;
-    margin: -20px -20px 2rem -20px;
-    transition: background 0.3s ease;
-}
-
-.admin-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.admin-nav h1 {
-    margin: 0;
-    font-size: 2rem;
-}
-
-.admin-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.admin-user {
-    font-weight: 500;
-}
-
-.admin-content {
-    padding: 0 1rem;
-}
-
-.admin-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-}
-
-.stat-card {
-    background: var(--bg-secondary);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px var(--shadow);
-    text-align: center;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.stat-card h3 {
-    font-size: 2.5rem;
-    color: #667eea;
-    margin: 0 0 0.5rem 0;
-}
-
-.stat-card p {
-    color: var(--text-tertiary);
-    margin: 0;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-[data-theme="dark"] .stat-card p {
-    color: #b0b0b0;
-}
-
-.admin-links h2 {
-    color: var(--text-primary);
-    margin-bottom: 1.5rem;
-    transition: color 0.3s ease;
-}
-
-[data-theme="dark"] .admin-links h2 {
-    color: #ffffff;
-}
-
-.action-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-}
-
-.action-card {
-    background: var(--bg-secondary);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px var(--shadow);
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: all 0.3s ease;
-    text-align: center;
-}
-
-.action-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 20px var(--shadow-dark);
-    color: #667eea;
-}
-
-.action-card i {
-    font-size: 2.5rem;
-    color: #667eea;
-    margin-bottom: 1rem;
-}
-
-.action-card h3 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.3rem;
-}
-
-.action-card p {
-    margin: 0;
-    color: var(--text-tertiary);
-    font-size: 0.9rem;
-    transition: color 0.3s ease;
-}
-</style>
 {% endblock %}
-
