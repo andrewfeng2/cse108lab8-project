@@ -4,13 +4,13 @@ window.onload = function() {
 };
 
 function switchTab(tab) {
-    var allTabs = document.getElementsByClassName('tab-content');
+    const allTabs = document.getElementsByClassName('tab-content');
     var i;
     for (i = 0; i < allTabs.length; i++) {
         allTabs[i].classList.remove('active');
     }
     
-    var allBtns = document.getElementsByClassName('tab-btn');
+    const allBtns = document.getElementsByClassName('tab-btn');
     for (i = 0; i < allBtns.length; i++) {
         allBtns[i].classList.remove('active');
     }

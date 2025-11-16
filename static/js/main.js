@@ -1,12 +1,12 @@
 function showLoading() {
-    var loading = document.getElementById('loading');
+    const loading = document.getElementById('loading');
     if (loading) {
         loading.classList.remove('hidden');
     }
 }
 
 function hideLoading() {
-    var loading = document.getElementById('loading');
+    const loading = document.getElementById('loading');
     if (loading) {
         loading.classList.add('hidden');
     }
@@ -14,7 +14,7 @@ function hideLoading() {
 
 function showNotification(message, type) {
     type = type || 'info';
-    var notification = document.createElement('div');
+    const notification = document.createElement('div');
     notification.className = 'notification notification-' + type;
     notification.textContent = message;
     notification.style.cssText = 'position: fixed; top: 20px; right: 20px; padding: 1rem 1.5rem; border-radius: 5px; color: white; font-weight: 500; z-index: 1001; animation: slideIn 0.3s ease;';
@@ -41,12 +41,12 @@ function showNotification(message, type) {
     }, 3000);
 }
 
-var style = document.createElement('style');
+const style = document.createElement('style');
 style.textContent = '@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } } @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }';
 document.head.appendChild(style);
 
 function validateForm(form) {
-    var inputs = form.querySelectorAll('input[required]');
+    const inputs = form.querySelectorAll('input[required]');
     var isValid = true;
     for (var i = 0; i < inputs.length; i++) {
         if (!inputs[i].value.trim()) {
@@ -60,7 +60,7 @@ function validateForm(form) {
 }
 
 function openModal(modalId) {
-    var modal = document.getElementById(modalId);
+    const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
@@ -68,7 +68,7 @@ function openModal(modalId) {
 }
 
 function closeModal(modalId) {
-    var modal = document.getElementById(modalId);
+    const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.add('hidden');
         document.body.style.overflow = 'auto';
@@ -76,7 +76,7 @@ function closeModal(modalId) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    var closeBtns = document.querySelectorAll('.close');
+    const closeBtns = document.querySelectorAll('.close');
     for (var i = 0; i < closeBtns.length; i++) {
         closeBtns[i].addEventListener('click', function() {
             var modal = this.closest('.modal');
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    var modals = document.querySelectorAll('.modal');
+    const modals = document.querySelectorAll('.modal');
     for (var i = 0; i < modals.length; i++) {
         modals[i].addEventListener('click', function(e) {
             if (e.target === this) {
@@ -95,11 +95,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    var loginForm = document.querySelector('.login-form');
+    const loginForm = document.querySelector('.login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
-            var username = this.querySelector('#username');
-            var password = this.querySelector('#password');
+            const username = this.querySelector('#username');
+            const password = this.querySelector('#password');
             if (!username.value.trim() || !password.value.trim()) {
                 e.preventDefault();
                 showNotification('Please fill in all required fields.', 'warning');
@@ -109,11 +109,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    var anchors = document.querySelectorAll('a[href^="#"]');
+    const anchors = document.querySelectorAll('a[href^="#"]');
     for (var i = 0; i < anchors.length; i++) {
         anchors[i].addEventListener('click', function(e) {
             e.preventDefault();
-            var target = document.querySelector(this.getAttribute('href'));
+            const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',
@@ -125,14 +125,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            var openModals = document.querySelectorAll('.modal:not(.hidden)');
+            const openModals = document.querySelectorAll('.modal:not(.hidden)');
             for (var i = 0; i < openModals.length; i++) {
                 closeModal(openModals[i].id);
             }
         }
     });
     
-    var submitBtns = document.querySelectorAll('button[type="submit"]');
+    const submitBtns = document.querySelectorAll('button[type="submit"]');
     for (var i = 0; i < submitBtns.length; i++) {
         if (submitBtns[i].closest('.login-form')) {
             continue;
