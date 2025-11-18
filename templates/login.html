@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}Login - UC Merced{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h2>Sign In</h2>
+        </div>
+        
+        <form method="POST" class="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full">Sign in</button>
+        </form>
+        
+        <div class="demo-accounts">
+            <h3>Demo Accounts</h3>
+            
+            <div class="demo-section">
+                <h4>Admin</h4>
+                <div class="demo-grid">
+                    <div class="demo-account">
+                        <h4>Admin</h4>
+                        <p><strong>Username:</strong> admin</p>
+                        <p><strong>Password:</strong> admin123</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h4>Teachers</h4>
+                <div class="demo-grid">
+                    <div class="demo-account">
+                        <h4>Ammon Hepworth</h4>
+                        <p><strong>Username:</strong> ahepworth</p>
+                        <p><strong>Password:</strong> teacher123</p>
+                        <p><strong>Courses:</strong> CS 106, CS 162</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Susan Walker</h4>
+                        <p><strong>Username:</strong> swalker</p>
+                        <p><strong>Password:</strong> teacher123</p>
+                        <p><strong>Courses:</strong> Physics 121</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Ralph Jenkins</h4>
+                        <p><strong>Username:</strong> rjenkins</p>
+                        <p><strong>Password:</strong> teacher123</p>
+                        <p><strong>Courses:</strong> Math 101</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h4>Students</h4>
+                <div class="demo-grid">
+                    <div class="demo-account">
+                        <h4>Chuck Norris</h4>
+                        <p><strong>Username:</strong> cnorris</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Mindy Norris</h4>
+                        <p><strong>Username:</strong> mnorris</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Aditya Ranganath</h4>
+                        <p><strong>Username:</strong> aranganath</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Nancy Little</h4>
+                        <p><strong>Username:</strong> nlittle</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Yi Wen Chen</h4>
+                        <p><strong>Username:</strong> ychen</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>John Stuart</h4>
+                        <p><strong>Username:</strong> jstuart</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Jose Santos</h4>
+                        <p><strong>Username:</strong> jsantos</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Betty Brown</h4>
+                        <p><strong>Username:</strong> bbrown</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Li Cheng</h4>
+                        <p><strong>Username:</strong> lcheng</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Michael Garcia</h4>
+                        <p><strong>Username:</strong> mgarcia</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Emily White</h4>
+                        <p><strong>Username:</strong> ewhite</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Robert Johnson</h4>
+                        <p><strong>Username:</strong> rjohnson</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Anna Martinez</h4>
+                        <p><strong>Username:</strong> amartinez</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Thomas Kim</h4>
+                        <p><strong>Username:</strong> tkim</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Jessica Wilson</h4>
+                        <p><strong>Username:</strong> jwilson</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Daniel Clark</h4>
+                        <p><strong>Username:</strong> dclark</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Sophia Moore</h4>
+                        <p><strong>Username:</strong> smoore</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Alex Taylor</h4>
+                        <p><strong>Username:</strong> ataylor</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Maya Hughes</h4>
+                        <p><strong>Username:</strong> mhughes</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                    <div class="demo-account">
+                        <h4>Chris Wright</h4>
+                        <p><strong>Username:</strong> cwright</p>
+                        <p><strong>Password:</strong> student123</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
