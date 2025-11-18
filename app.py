@@ -155,6 +155,7 @@ class EnrollmentModelView(ModelView):
     
     column_list = ['student', 'course', 'grade', 'enrolled_date']
     form_columns = ['student_id', 'course_id', 'grade']
+    page_size = 1000
     
     def create_form(self):
         form = super(EnrollmentModelView, self).create_form()
