@@ -2,9 +2,11 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.form import Select2Widget
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from wtforms import Form, StringField, SelectField, PasswordField
+from wtforms.fields import SelectField as WTFSelectField
 from sqlalchemy import text
 import os
 
@@ -86,7 +88,8 @@ class UserModelView(ModelView):
     column_list = ['username', 'first_name', 'last_name', 'role']
     form = UserForm
     can_delete = True
-    page_size = 1000  
+    page_size = 1000
+    action_disallowed_list = ['delete']  
     
     def on_model_change(self, form, model, is_created):
         if hasattr(form, 'password') and form.password.data:
@@ -136,6 +139,15 @@ class CourseModelView(ModelView):
     
     column_list = ['name', 'teacher', 'time', 'capacity']
     form_columns = ['name', 'teacher_id', 'time', 'capacity']
+    action_disallowed_list = ['delete']
+    
+    column_formatters = {
+        'teacher': lambda v, c, m, p: f"{m.teacher.first_name} {m.teacher.last_name}" if m.teacher else 'N/A'
+    }
+    
+    form_overrides = {
+        'teacher_id': WTFSelectField
+    }
     
     def create_form(self):
         form = super(CourseModelView, self).create_form()
@@ -155,7 +167,18 @@ class EnrollmentModelView(ModelView):
     
     column_list = ['student', 'course', 'grade', 'enrolled_date']
     form_columns = ['student_id', 'course_id', 'grade']
-    page_size = 1000
+    action_disallowed_list = ['delete']
+    
+    column_formatters = {
+        'student': lambda v, c, m, p: f"{m.student.first_name} {m.student.last_name}" if m.student else 'N/A',
+        'course': lambda v, c, m, p: m.course.name if m.course else 'N/A',
+        'enrolled_date': lambda v, c, m, p: m.enrolled_date.strftime('%Y-%m-%d') if m.enrolled_date else 'N/A'
+    }
+    
+    form_overrides = {
+        'student_id': WTFSelectField,
+        'course_id': WTFSelectField
+    }
     
     def create_form(self):
         form = super(EnrollmentModelView, self).create_form()
