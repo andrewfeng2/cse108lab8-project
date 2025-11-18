@@ -5,15 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ admin_view.name }}{% endblock %}</title>
     
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Main CSS for theme support -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     
     <script>
-        // Initialize theme immediately to prevent flash
         (function() {
             const savedTheme = localStorage.getItem('theme') || 'light';
             if (savedTheme === 'dark') {
@@ -23,7 +19,6 @@
     </script>
     
     <style>
-        /* Prevent horizontal scrollbar */
         html, body {
             overflow-x: hidden !important;
             max-width: 100vw !important;
@@ -38,17 +33,14 @@
             overflow-x: hidden !important;
         }
         
-        /* Ensure tables don't cause horizontal scroll */
         .table-responsive {
             overflow-x: auto;
         }
         
-        /* Ensure all content stays within viewport */
         * {
             box-sizing: border-box;
         }
         
-        /* Admin-specific dark theme overrides */
         [data-theme="dark"] .navbar {
             background: var(--navbar-gradient) !important;
             border-bottom: none !important;
@@ -172,7 +164,6 @@
             color: #ffffff !important;
         }
         
-        /* Ensure all buttons have proper text contrast in dark mode */
         [data-theme="dark"] .btn,
         [data-theme="dark"] button.btn,
         [data-theme="dark"] input[type="submit"].btn,
@@ -181,7 +172,6 @@
             font-weight: 500;
         }
         
-        /* Specifically target Flask-Admin form buttons */
         [data-theme="dark"] .btn-primary,
         [data-theme="dark"] button.btn-primary,
         [data-theme="dark"] input.btn-primary {
@@ -197,7 +187,6 @@
             color: #ffffff !important;
         }
         
-        /* Target buttons in forms specifically */
         [data-theme="dark"] form .btn,
         [data-theme="dark"] form button,
         [data-theme="dark"] form input[type="submit"],
@@ -205,7 +194,6 @@
             color: #ffffff !important;
         }
         
-        /* Ensure button text is always visible */
         [data-theme="dark"] .btn *,
         [data-theme="dark"] button * {
             color: inherit !important;
@@ -394,7 +382,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
-        /* Ensure all table text is white in dark mode, no alternating colors */
         [data-theme="dark"] .table tbody tr:nth-child(odd),
         [data-theme="dark"] .table tbody tr:nth-child(even) {
             color: #ffffff !important;
@@ -405,7 +392,6 @@
             color: #ffffff !important;
         }
         
-        /* Make trash/delete icons more visible in dark mode */
         [data-theme="dark"] .fa-trash,
         [data-theme="dark"] .fa-trash-alt,
         [data-theme="dark"] .fa-trash-can,
@@ -416,7 +402,88 @@
             filter: brightness(1.3) !important;
         }
         
-        /* Style delete/danger buttons in dark mode */
+        .fa-trash,
+        .fa-trash-alt,
+        .fa-trash-can,
+        i.fa-trash,
+        i.fa-trash-alt,
+        i.fa-trash-can {
+            color: #002856 !important;
+        }
+        
+        a[href*="delete"],
+        button[onclick*="delete"],
+        form[action*="delete"] button,
+        .glyphicon-trash,
+        a.icon[title*="Delete"],
+        a[title*="Delete"] {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            color: #002856 !important;
+            text-decoration: none !important;
+        }
+        
+        a[href*="delete"]:hover,
+        button[onclick*="delete"]:hover {
+            background: none !important;
+            color: #0056b3 !important;
+            transform: none !important;
+        }
+        
+        a[href*="delete"] .fa-trash,
+        a[href*="delete"] .fa-trash-alt,
+        a[href*="delete"] .fa-trash-can,
+        button[onclick*="delete"] .fa-trash,
+        button[onclick*="delete"] .fa-trash-alt,
+        button[onclick*="delete"] .fa-trash-can {
+            color: #002856 !important;
+            filter: none !important;
+        }
+        
+        a[href*="delete"]:hover .fa-trash,
+        a[href*="delete"]:hover .fa-trash-alt,
+        a[href*="delete"]:hover .fa-trash-can,
+        button[onclick*="delete"]:hover .fa-trash,
+        button[onclick*="delete"]:hover .fa-trash-alt,
+        button[onclick*="delete"]:hover .fa-trash-can {
+            color: #0056b3 !important;
+        }
+        
+        .glyphicon-pencil,
+        a[href*="edit"],
+        a[title*="Edit"],
+        button[onclick*="edit"] {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            color: #002856 !important;
+            text-decoration: none !important;
+        }
+        
+        .glyphicon-pencil:hover,
+        a[href*="edit"]:hover,
+        a[title*="Edit"]:hover,
+        button[onclick*="edit"]:hover {
+            background: none !important;
+            color: #0056b3 !important;
+            transform: none !important;
+        }
+        
+        [data-theme="dark"] .glyphicon-pencil,
+        [data-theme="dark"] a[href*="edit"],
+        [data-theme="dark"] a[title*="Edit"] {
+            color: #ff4444 !important;
+        }
+        
+        [data-theme="dark"] .glyphicon-pencil:hover,
+        [data-theme="dark"] a[href*="edit"]:hover,
+        [data-theme="dark"] a[title*="Edit"]:hover {
+            color: #ff6666 !important;
+        }
+        
         [data-theme="dark"] .btn-danger,
         [data-theme="dark"] button.btn-danger,
         [data-theme="dark"] a.btn-danger {
@@ -434,7 +501,6 @@
             filter: brightness(1.1) !important;
         }
         
-        /* Make trash icons inside buttons more visible */
         [data-theme="dark"] .btn-danger .fa-trash,
         [data-theme="dark"] .btn-danger .fa-trash-alt,
         [data-theme="dark"] .btn-danger .fa-trash-can,
@@ -443,7 +509,6 @@
             filter: brightness(1.2) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5)) !important;
         }
         
-        /* Target any delete/trash icons in links or buttons */
         [data-theme="dark"] a[href*="delete"] .fa-trash,
         [data-theme="dark"] a[href*="delete"] .fa-trash-alt,
         [data-theme="dark"] a[href*="delete"] .fa-trash-can,
@@ -454,6 +519,221 @@
         [data-theme="dark"] button[onclick*="delete"] i[class*="trash"] {
             color: #ff4444 !important;
             filter: brightness(1.4) drop-shadow(0 0 3px rgba(255, 68, 68, 0.6)) !important;
+        }
+        
+        .container-fluid h1 a,
+        .container-fluid h1 > a,
+        h1 a,
+        .container-fluid .btn-group a,
+        .container-fluid .actions a,
+        .container-fluid a.btn,
+        .container-fluid button.btn,
+        .container-fluid a[data-toggle="dropdown"],
+        .container-fluid .dropdown-toggle,
+        .page-header a,
+        .page-header .btn,
+        div.btn-group > a,
+        .actions-nav a,
+        ul.nav.nav-tabs ~ .btn-group a,
+        ul.nav.nav-tabs li a {
+            background: #002856 !important;
+            color: white !important;
+            border: none !important;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 2px 6px rgba(0, 40, 86, 0.2) !important;
+            display: inline-block !important;
+            margin: 0 0.4rem 0.4rem 0 !important;
+            line-height: 1.5 !important;
+        }
+        
+        .container-fluid h1 a:hover,
+        .container-fluid h1 > a:hover,
+        h1 a:hover,
+        .container-fluid .btn-group a:hover,
+        .container-fluid .actions a:hover,
+        .container-fluid a.btn:hover,
+        .container-fluid button.btn:hover,
+        .container-fluid a[data-toggle="dropdown"]:hover,
+        .container-fluid .dropdown-toggle:hover,
+        .page-header a:hover,
+        .page-header .btn:hover,
+        div.btn-group > a:hover,
+        .actions-nav a:hover,
+        ul.nav.nav-tabs ~ .btn-group a:hover,
+        ul.nav.nav-tabs li a:hover {
+            background: #003d7a !important;
+            color: white !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 10px rgba(0, 40, 86, 0.3) !important;
+            text-decoration: none !important;
+        }
+        
+        .container-fluid .btn-group,
+        .container-fluid .actions,
+        .actions-nav {
+            display: inline-flex !important;
+            gap: 0.5rem !important;
+            align-items: center !important;
+            flex-wrap: wrap !important;
+        }
+        
+        [data-theme="dark"] .container-fluid h1 a,
+        [data-theme="dark"] .container-fluid h1 > a,
+        [data-theme="dark"] h1 a,
+        [data-theme="dark"] .container-fluid .btn-group a,
+        [data-theme="dark"] .container-fluid .actions a,
+        [data-theme="dark"] .container-fluid a.btn,
+        [data-theme="dark"] .container-fluid a[data-toggle="dropdown"],
+        [data-theme="dark"] .container-fluid .dropdown-toggle,
+        [data-theme="dark"] .page-header a,
+        [data-theme="dark"] div.btn-group > a,
+        [data-theme="dark"] .actions-nav a,
+        [data-theme="dark"] ul.nav.nav-tabs li a {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%) !important;
+        }
+        
+        [data-theme="dark"] .container-fluid h1 a:hover,
+        [data-theme="dark"] .container-fluid h1 > a:hover,
+        [data-theme="dark"] h1 a:hover,
+        [data-theme="dark"] .container-fluid .btn-group a:hover,
+        [data-theme="dark"] .container-fluid .actions a:hover,
+        [data-theme="dark"] .container-fluid a.btn:hover,
+        [data-theme="dark"] .container-fluid a[data-toggle="dropdown"]:hover,
+        [data-theme="dark"] .container-fluid .dropdown-toggle:hover,
+        [data-theme="dark"] .page-header a:hover,
+        [data-theme="dark"] div.btn-group > a:hover,
+        [data-theme="dark"] .actions-nav a:hover,
+        [data-theme="dark"] ul.nav.nav-tabs li a:hover {
+            background: linear-gradient(135deg, #5a6578 0%, #3d4758 100%) !important;
+        }
+        
+        input[name="save_and_add_another"],
+        input[value="Save and Add Another"],
+        input[value="Save and Continue Editing"],
+        button[name="save_and_add_another"],
+        .btn-group .btn:nth-child(2):not(.btn-danger),
+        .btn-group .btn:nth-child(3):not(.btn-danger) {
+            display: none !important;
+        }
+        
+        /* Enhanced table styling */
+        .table {
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            width: 100% !important;
+            margin-bottom: 1.5rem !important;
+            background-color: white !important;
+            border-radius: 8px !important;
+            overflow: hidden !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+        }
+        
+        .table thead th {
+            background: #002856 !important;
+            color: white !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            font-size: 0.85rem !important;
+            letter-spacing: 0.5px !important;
+            padding: 1rem !important;
+            border: none !important;
+            vertical-align: middle !important;
+        }
+        
+        .table tbody tr {
+            transition: all 0.2s ease !important;
+            border-bottom: 1px solid #e9ecef !important;
+        }
+        
+        .table tbody tr:hover {
+            background-color: #f8f9fa !important;
+            transform: scale(1.001) !important;
+            box-shadow: 0 2px 4px rgba(0, 40, 86, 0.1) !important;
+        }
+        
+        .table tbody td {
+            padding: 0.9rem 1rem !important;
+            vertical-align: middle !important;
+            border: none !important;
+            color: #212529 !important;
+        }
+        
+        .table tbody tr:last-child {
+            border-bottom: none !important;
+        }
+        
+        /* Dark mode table styling */
+        [data-theme="dark"] .table {
+            background-color: var(--bg-secondary) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+        }
+        
+        [data-theme="dark"] .table thead th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+        }
+        
+        [data-theme="dark"] .table tbody tr {
+            border-bottom: 1px solid var(--border-light) !important;
+        }
+        
+        [data-theme="dark"] .table tbody tr:hover {
+            background-color: var(--bg-tertiary) !important;
+            box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2) !important;
+        }
+        
+        [data-theme="dark"] .table tbody td {
+            color: #ffffff !important;
+        }
+        
+        .table-responsive {
+            border-radius: 8px !important;
+            overflow: hidden !important;
+        }
+        
+        .pagination {
+            margin-top: 1.5rem !important;
+        }
+        
+        .pagination .page-link {
+            border-radius: 6px !important;
+            margin: 0 0.2rem !important;
+            border: 1px solid #dee2e6 !important;
+            color: #002856 !important;
+            font-weight: 500 !important;
+            transition: all 0.2s ease !important;
+        }
+        
+        .pagination .page-link:hover {
+            background-color: #002856 !important;
+            color: white !important;
+            border-color: #002856 !important;
+        }
+        
+        .pagination .page-item.active .page-link {
+            background-color: #002856 !important;
+            border-color: #002856 !important;
+        }
+        
+        [data-theme="dark"] .pagination .page-link {
+            background-color: var(--bg-secondary) !important;
+            color: #e0e0e0 !important;
+            border-color: var(--border-light) !important;
+        }
+        
+        [data-theme="dark"] .pagination .page-link:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border-color: #667eea !important;
+        }
+        
+        [data-theme="dark"] .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            border-color: #667eea !important;
         }
     </style>
     
