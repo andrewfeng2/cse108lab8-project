@@ -168,6 +168,7 @@ class EnrollmentModelView(ModelView):
     column_list = ['student', 'course', 'grade', 'enrolled_date']
     form_columns = ['student_id', 'course_id', 'grade']
     action_disallowed_list = ['delete']
+    page_size = 1000
     
     column_formatters = {
         'student': lambda v, c, m, p: f"{m.student.first_name} {m.student.last_name}" if m.student else 'N/A',
